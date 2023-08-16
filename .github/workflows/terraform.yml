@@ -27,8 +27,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: github-oidc-terraform-role
-
+          role-session-name: GitHub-OIDC-TERRAFORM
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -45,7 +44,7 @@ jobs:
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
-        run: terraform init -backend-config="bucket=my-github-oidc-bucket-3207" -backend-config="key=infra.tfstate" -backend-config="region=us-east-1" -reconfigure
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
 
       - name: Terraform Validate
         id: validate
